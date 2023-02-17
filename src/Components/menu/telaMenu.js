@@ -11,21 +11,24 @@ import { InputText } from 'primereact/inputtext';
 import Cactu from "../../Assets/image/cactu.png"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Sidebar } from 'primereact/sidebar';
 
 
 
 
 export default function Menu(){
     const [searchText, setSearchText] = useState("");
-
+    const [visibleLeft, setVisibleLeft] = useState(false);
     const usuario = localStorage.getItem("dados")
     const usuarioDados = JSON.parse(usuario)
 
     const data = [
-        { nome: 'João', projeto: 'Projeto A', escolaridade: 'Graduado', email: 'joao@example.com', situacao: 'Ativo' },
-        { nome: 'Maria', projeto: 'Projeto B', escolaridade: 'Pós-graduado', email: 'maria@example.com', situacao: 'Inativo' },
-        { nome: 'Pedro', projeto: 'Projeto C', escolaridade: 'Graduado', email: 'pedro@example.com', situacao: 'Ativo' },
-        { nome: 'Ana', projeto: 'Projeto D', escolaridade: 'Mestrado', email: 'ana@example.com', situacao: 'Inativo' }
+        { image: {Cactu}, nome: 'João', projeto: 'Projeto A', escolaridade: 'Graduado', email: 'joao@example.com', situacao: 'Em andamento' },
+        { image: {Cactu}, nome: 'Maria', projeto: 'Projeto B', escolaridade: 'Pós-graduado', email: 'maria@example.com', situacao: 'Concluido' },
+        { image: {Cactu}, nome: 'Pedro', projeto: 'Projeto C', escolaridade: 'Graduado', email: 'pedro@example.com', situacao: 'Interrompido' },
+        { image: {Cactu}, nome: 'Ana', projeto: 'Projeto D', escolaridade: 'Mestrado', email: 'ana@example.com', situacao: 'cancelado' },
+        { image: {Cactu}, nome: 'Ana Paula', projeto: 'Projeto E', escolaridade: 'Mestrado', email: 'anaPaula@example.com', situacao: 'Em andamento' },
+        { image: {Cactu}, nome: 'Paula', projeto: 'Projeto F', escolaridade: 'Mestrado', email: 'Paula@example.com', situacao: 'Em andamento' }
       ];
 
    const renderEyeButton = (rowData) => {
@@ -100,27 +103,55 @@ export default function Menu(){
                 <SidebarContainer>
                     <img src={Logo} alt="logo"/>
                     <List>
-                        <ListItem><FiMenu size={24}/></ListItem>
-                        <ListItem><FaUserGraduate size={24}/></ListItem>
-                        <ListItem><RiPagesLine size={24}/></ListItem>
-                        <ListItem><MdOutlineAttachMoney size={24}/></ListItem>
+                        <IconMenu>
+                            <ListItem><FiMenu size={24} onClick={() => setVisibleLeft(true)} className="mr-2"/></ListItem>
+                        </IconMenu>
+                        <IconRH>
+                            <ListItem><FaUserGraduate size={24}/></ListItem>
+                        </IconRH>
+                        <IconPage>
+                            <ListItem><RiPagesLine size={24}/></ListItem>
+                        </IconPage>
+                        <IconLock>
+                            <ListItem><MdOutlineAttachMoney size={24}/></ListItem>
+                        </IconLock>
                         <ListItem><FaLock size={24}/></ListItem>
                     </List>
                 </SidebarContainer>
-                <SidebarContainer2>
-                    <TopImage>
+                <Sidebar dismissable={false} visible={visibleLeft} onHide={() => setVisibleLeft(false)}>
+                    <SidebarContainer>
                         <img src={Logo} alt="logo"/>
-                        <h1>OBSIUS</h1>
-                    </TopImage>
-                    <Categories>
                         <List>
-                            <div className="card flex justify-content-center">
-                                <PanelMenu model={items} className="w-full md:w-25rem" />
-                            </div>
-                        </List>
+                            <IconMenu>
+                                <ListItem><FiMenu size={24} onClick={() => setVisibleLeft(true)} className="mr-2"/></ListItem>
+                            </IconMenu>
+                            <IconRH>
+                                <ListItem><FaUserGraduate size={24}/></ListItem>
+                            </IconRH>
+                            <IconPage>
+                                <ListItem><RiPagesLine size={24}/></ListItem>
+                            </IconPage>
+                            <IconLock>
+                                <ListItem><MdOutlineAttachMoney size={24}/></ListItem>
+                            </IconLock>
+                            <ListItem><FaLock size={24}/></ListItem>
+                        </List>             
+                    </SidebarContainer>
+                    <SidebarContainer2>
+                        <TopImage>
+                            <img src={Logo} alt="logo"/>
+                            <h1>OBSIUS</h1>
+                        </TopImage>
+                        <Categories>
+                            <List>
+                                <div className="card flex justify-content-center">
+                                    <PanelMenu model={items} className="w-full md:w-25rem" />
+                                </div>
+                            </List>
 
-                    </Categories>
-                </SidebarContainer2>
+                        </Categories>
+                    </SidebarContainer2>   
+                </Sidebar>
                 <ContainerMenu>
                     <Header>
                         <Title>
@@ -141,13 +172,13 @@ export default function Menu(){
                     <Line/>
                     <Colunnas>
                         <SearchBar>
-                        <span className="p-input-icon-left">
-
-                            <FaSearch size={20}/>
-                            <InputText placeholder="Pesquisar" onChange={onSearch} />
-                        </span>
+                            <span className="p-input-icon-left">
+                                <FaSearch size={20}/>
+                                <StyleSearch placeholder="Pesquisar" onChange={onSearch} />
+                            </span>
                         </SearchBar>
                         <Table value={filterData}>
+                            
                             <Column field="nome" header="Nome" />
                             <Column field="projeto" header="Projeto" />
                             <Column field="escolaridade" header="Escolaridade" />
@@ -170,6 +201,23 @@ export default function Menu(){
         </>
     );
 }
+
+const IconMenu = styled.div`
+  margin-top: 10px;
+  margin-bottom:13px;
+`;
+const IconRH = styled.div`
+  margin-top: 10px;
+  margin-bottom:16px;
+`;
+const IconPage = styled.div`
+  margin-top: 10px;
+  margin-bottom:16px;
+`;
+const IconLock = styled.div`
+  margin-top: 10px;
+  margin-bottom:20px;
+`;
 const Colunnas = styled.div`
   display: flex;
   flex-direction: column;
@@ -178,12 +226,17 @@ const Colunnas = styled.div`
 `;
 
 const SearchBar = styled.div`
+    height:80px;
+    width:100%;
   display: flex;
+  justify-content: right;
   align-items: center;
   gap: 1rem;
 
   .p-inputtext {
-    width: 300px;
+    width: 320px;
+    margin-right: 75px;
+    
   }
 `;
 
@@ -193,23 +246,25 @@ const Table = styled(DataTable)`
 
   .p-datatable-thead > tr > th {
     font-weight: 700;
+        background-color: #1B1F2E;
+        color:white;
   }
-
   .p-datatable-tbody > tr:nth-child(even) > td {
     background-color: #f9f9f9;
   }
-
   .p-datatable-tbody > tr:hover > td {
     background-color: #e6f2ff;
     cursor: pointer;
   }
 `;
 
+
 const StatusButton = styled(Button)`
   background-color: ${(props) => {
-    if (props.status === "aprovado") return "#4caf50";
-    if (props.status === "em andamento") return "#ff9800";
-    if (props.status === "reprovado") return "#f44336";
+    if (props.status === "Concluido") return "green";
+    if (props.status === "em andamento") return "blue";
+    if (props.status === "Interrompido") return "yellow";
+    if (props.status === "cancelado") return "red";
   }};
   color: #fff;
   font-size: 0.8rem;
@@ -233,9 +288,6 @@ const EyeButton = styled(Button)`
 
 const StyleSearch = styled(InputText)`
 outline: none;
-width: 305px;
-margin-top:10px;
-margin-left:10px;
 border-bottom: 3px solid black;
   border-top: none;
   border-left: none;
@@ -247,7 +299,6 @@ const ContainerMenu = styled.div`
 display:flex;
 flex-direction:column;
 height: 100%;
-
 
 `;
 const Options = styled.div`
@@ -295,20 +346,18 @@ const Line = styled.div`
 const Header = styled.div`
 display:flex;
 align-items: center;
+justify-content:space-around;
 width: 100vw;
 height: 15vh;
 background:#F1F5FA;
-box-shadow: 2px 2px 4px black;
+box-shadow: 2px 2px 6px black;
 
 
 `;
 const Title =styled.div`
-
 h1{
     font-size:20px;
     font-weight: bold;
-    margin-top: 20px;
-    margin-left: 20px;
 
 }
 `;
@@ -316,12 +365,14 @@ const Container = styled.div`
 display: flex;
 height: 100vh;
 width: 100vw;
+margin-left: 125px;
+
 background:#FFFFFF;
 `;
 const SidebarContainer = styled.div`
   height: 100%;
   width: 60px;
-  z-index:2;
+  z-index:10;
 
   position: fixed;
   top: 0;
@@ -331,7 +382,7 @@ const SidebarContainer = styled.div`
   padding: 5px;
   img{
     height: 35px;
-    margin-top: 30px;
+    margin-top: 70px;
     margin-left: 5px;
     margin-bottom: 30px;
   }
@@ -344,8 +395,7 @@ const SidebarContainer2 = styled.div`
   padding: 3px;
   img{
     height: 50px;
-    margin-top: 24px;
-    margin-left: 95px;
+    margin-left: 55px;
     margin-bottom: 30px;
   }
 `;
