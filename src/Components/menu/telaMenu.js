@@ -1,17 +1,102 @@
 import styled from "styled-components";
 import {FiMenu} from "react-icons/fi"
-import {FaUserGraduate, FaLock} from "react-icons/fa"
+import {FaUserGraduate, FaLock,FaSearch} from "react-icons/fa"
 import {RiPagesLine} from "react-icons/ri"
 import {MdOutlineAttachMoney} from "react-icons/md"
 import Logo from "../../Assets/image/cactu.png"
+import { PanelMenu } from 'primereact/panelmenu';
+import { Button } from 'primereact/button';
+import { useState } from "react";
+import { InputText } from 'primereact/inputtext';
+import Cactu from "../../Assets/image/cactu.png"
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
+
+
 
 export default function Menu(){
+    const [searchText, setSearchText] = useState("");
+
     const usuario = localStorage.getItem("dados")
     const usuarioDados = JSON.parse(usuario)
-    console.log(usuarioDados)
+
+    const data = [
+        { nome: 'João', projeto: 'Projeto A', escolaridade: 'Graduado', email: 'joao@example.com', situacao: 'Ativo' },
+        { nome: 'Maria', projeto: 'Projeto B', escolaridade: 'Pós-graduado', email: 'maria@example.com', situacao: 'Inativo' },
+        { nome: 'Pedro', projeto: 'Projeto C', escolaridade: 'Graduado', email: 'pedro@example.com', situacao: 'Ativo' },
+        { nome: 'Ana', projeto: 'Projeto D', escolaridade: 'Mestrado', email: 'ana@example.com', situacao: 'Inativo' }
+      ];
+
+   const renderEyeButton = (rowData) => {
+    return (
+      <EyeButton
+        icon="pi pi-eye"
+        onClick={() => console.log("Visualizar detalhes:", rowData)}
+      />
+    );
+  };
+  const renderStatusButton = (rowData) => {
+    return <StatusButton status={rowData.situacao}>{rowData.situacao}</StatusButton>;
+  };
+  const onSearch = (event) => {
+    setSearchText(event.target.value);
+  };
+  const filterData = data.filter(
+    (item) =>
+      item.nome.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.projeto.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.email.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+   
+      
+    const items = [
+        {
+            label:<MenuItem>MENU</MenuItem>,
+        },
+        {
+            label:<MenuItem>RH</MenuItem>,
+            items:[
+                {
+                    label:'Bolsistas e CLTs',
+                },
+                {
+                    label:'Banco de Talentos',
+                }  
+            ]
+        },
+        {
+            label:<MenuItem>PROJETOS</MenuItem>,
+            items:[
+                {
+                    label:'Lista de Projetos',
+                },
+            ]
+        },
+        {
+            label:<MenuItem>FINANCEIRO</MenuItem>,
+            items:[
+                {
+                    label:'DashBoard',
+                },
+            ]
+        },
+        {
+            label:<MenuItem>CONTROLE DE ACESSO</MenuItem>,
+            items:[
+                {
+                    label:'Lista de Projetos',
+                },
+            ]
+        },
+    ];
+
+    
     return(
         <>
             <Container>
+            
                 <SidebarContainer>
                     <img src={Logo} alt="logo"/>
                     <List>
@@ -28,28 +113,215 @@ export default function Menu(){
                         <h1>OBSIUS</h1>
                     </TopImage>
                     <Categories>
+                        <List>
+                            <div className="card flex justify-content-center">
+                                <PanelMenu model={items} className="w-full md:w-25rem" />
+                            </div>
+                        </List>
 
                     </Categories>
-                    <List>
-                        <ListItem>teste</ListItem>
-                        <ListItem><FaUserGraduate size={24}/></ListItem>
-                        <ListItem><RiPagesLine size={24}/></ListItem>
-                        <ListItem><MdOutlineAttachMoney size={24}/></ListItem>
-                        <ListItem><FaLock size={24}/></ListItem>
-                    </List>
                 </SidebarContainer2>
+                <ContainerMenu>
+                    <Header>
+                        <Title>
+                            <h1>Bolsistas e CLTs</h1>
+                        </Title>
+                        <Perfil>
+                            <h1>{usuarioDados.name}<br/>
+                            <br/>
+                            {usuarioDados.email}</h1>
+                            <img src={Cactu} alt="perfil"/>
+
+                        </Perfil>
+                    </Header>
+                    <Options>
+                        <h2>Bolsistas</h2>
+                        <h3>CLTs</h3>
+                    </Options>
+                    <Line/>
+                    <Colunnas>
+                        <SearchBar>
+                        <span className="p-input-icon-left">
+
+                            <FaSearch size={20}/>
+                            <InputText placeholder="Pesquisar" onChange={onSearch} />
+                        </span>
+                        </SearchBar>
+                        <Table value={filterData}>
+                            <Column field="nome" header="Nome" />
+                            <Column field="projeto" header="Projeto" />
+                            <Column field="escolaridade" header="Escolaridade" />
+                            <Column field="email" header="Email" />
+                            <Column
+                            header="Situação"
+                            body={renderStatusButton}
+                            style={{ textAlign: "center" }}
+                            />
+                            <Column
+                            header="Detalhes"
+                            body={renderEyeButton}
+                            style={{ textAlign: "center" }}
+                            />
+                        </Table>
+                    </Colunnas>
+                </ContainerMenu>
+               
             </Container>
         </>
     );
 }
+const Colunnas = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .p-inputtext {
+    width: 300px;
+  }
+`;
+
+const Table = styled(DataTable)`
+  width: 100%;
+  margin-top: 1rem;
+
+  .p-datatable-thead > tr > th {
+    font-weight: 700;
+  }
+
+  .p-datatable-tbody > tr:nth-child(even) > td {
+    background-color: #f9f9f9;
+  }
+
+  .p-datatable-tbody > tr:hover > td {
+    background-color: #e6f2ff;
+    cursor: pointer;
+  }
+`;
+
+const StatusButton = styled(Button)`
+  background-color: ${(props) => {
+    if (props.status === "aprovado") return "#4caf50";
+    if (props.status === "em andamento") return "#ff9800";
+    if (props.status === "reprovado") return "#f44336";
+  }};
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 4px;
+`;
+
+const EyeButton = styled(Button)`
+  background-color: transparent;
+  border: none;
+  color: #6c757d;
+
+  &:hover {
+    color: #000;
+  }
+`;
+
+
+
+
+const StyleSearch = styled(InputText)`
+outline: none;
+width: 305px;
+margin-top:10px;
+margin-left:10px;
+border-bottom: 3px solid black;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  
+`;
+const ContainerMenu = styled.div`
+display:flex;
+flex-direction:column;
+height: 100%;
+
+
+`;
+const Options = styled.div`
+    width: 205px;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    display:flex;
+    justify-content:space-around;
+    h2{
+        font-size:15px;
+        font-weight: bold;
+        color: #55B2FB;
+    }h3{
+        font-size:15px;
+        font-weight: bold;
+    }
+`;
+const Perfil = styled.div`
+display:flex;
+align-items:center;
+margin-left:680px;
+    img{
+        height:60px;
+    }
+
+`;
+const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  margin-top: 10px;
+  background-color: #55B2FB;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 2%;
+    top: 1;
+    bottom: 0;
+    width: 5%;
+    height: 4px;
+    border-radius:7px;
+    background-color: #55B2FB;
+  }
+`;
+const Header = styled.div`
+display:flex;
+align-items: center;
+width: 100vw;
+height: 15vh;
+background:#F1F5FA;
+box-shadow: 2px 2px 4px black;
+
+
+`;
+const Title =styled.div`
+
+h1{
+    font-size:20px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 20px;
+
+}
+`;
 const Container = styled.div`
 display: flex;
 height: 100vh;
 width: 100vw;
+background:#FFFFFF;
 `;
 const SidebarContainer = styled.div`
   height: 100%;
   width: 60px;
+  z-index:2;
 
   position: fixed;
   top: 0;
@@ -80,7 +352,6 @@ const SidebarContainer2 = styled.div`
 const TopImage = styled.div`
 display:flex;
 align-items:center;
-  background: red;
   h1{
     font-size:30px;
     color: #1B1F2E;
@@ -88,6 +359,8 @@ align-items:center;
   }
 `;
 const Categories = styled.div`
+height:100%;
+margin-left:60px;
 display:flex;
 flex-direction: column;
 `;
@@ -106,3 +379,12 @@ const ListItem = styled.li`
     background-color: #555;
   }
 `;
+
+
+const MenuItem = styled.span`
+  color: black; 
+  font-weight: bold;
+
+`;
+
+

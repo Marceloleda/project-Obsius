@@ -4,7 +4,7 @@ import { createGlobalStyle } from "styled-components";
 
 
 import Login from "./Components/Login/telaLogin";
-import Menu from "./Components/menu/telaMenu";
+import MenuPage from "./Components/menu/telaMenu";
 
 
 export default function App(){
@@ -14,7 +14,7 @@ export default function App(){
       <GlobalStyle/>
       <Routes>
         <Route path="/" element={<Login/>}/>
-        <Route path="/menu" element={<Menu/>}/>
+        <Route path="/menu" element={<MenuPage/>}/>
       </Routes>
 
     </>
