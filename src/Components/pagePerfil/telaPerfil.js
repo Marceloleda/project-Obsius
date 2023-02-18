@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import {FiMenu} from "react-icons/fi"
-import {FaUserGraduate, FaLock,FaArrowCircleLeft, FaBirthdayCake, FaIdCard, FaFlag} from "react-icons/fa"
+import {FaUserGraduate, FaLock,FaArrowCircleLeft, FaBirthdayCake, FaIdCard, FaFlag, FaFilePdf} from "react-icons/fa"
 import { AiOutlineRight} from "react-icons/ai"
 import { MdOutlineTransgender, MdSchool, MdDirections} from "react-icons/md" 
 import { GiHouse, GiDirectionSigns} from "react-icons/gi"
 import { SiStackbit} from "react-icons/si"
+import { BsDownload} from "react-icons/bs"
+
 import { ImLocation} from "react-icons/im"
 import { BsPersonFill} from "react-icons/bs"
 import { HiDocumentText} from "react-icons/hi" 
@@ -17,6 +19,14 @@ import Cactu from "../../Assets/image/cactu.png"
 import { Sidebar } from 'primereact/sidebar';
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../Contexts/UserContext";
+import { Button } from 'primereact/button';
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";   
+import { BsFillPersonPlusFill } from 'react-icons/bs';
+
+
+
 
 
 
@@ -158,13 +168,22 @@ export default function Menu(){
                     </Header>
                     <Bolsista>
                         <PerfilImag>
-                        <FaArrowCircleLeft style={{color: 'blue'}} size={40} 
+                        <FaArrowCircleLeft style={{color: 'blue', cursor: 'pointer'}} size={40} 
                         onClick={(()=>{
                             navigate("/menu")
                         })}/>
                             <img src={Logo}/>  
                             <h1>{perfilInf.nome}</h1>          
                         </PerfilImag>
+                        <Botoes>
+                            <ButStyle>
+                                <StyledBotao label="Tornar CLT" icon={<BsFillPersonPlusFill />} />
+                                <BotaoPdf label=" Baixar PDF" icon={<BsDownload />}  />
+                            </ButStyle>
+                                <div>
+                                    <h1>Última atualização: 14/12/2019</h1>
+                                </div>
+                        </Botoes>
                     </Bolsista>
                     <Options>
                         <h2>Dados Cadastrais</h2>
@@ -184,7 +203,6 @@ export default function Menu(){
                                 <FaBirthdayCake size={25}/>
                                 <MdOutlineTransgender size={25}/> 
                                 <SiStackbit size={25}/>
-
                             </Icons>
                             <Base1>
                                 <h2>Nome</h2>
@@ -289,6 +307,45 @@ export default function Menu(){
         </>
     );
 }
+const Botoes = styled.div`
+display:flex;
+flex-direction: column;
+width:500px;
+margin-top: 10px;
+
+
+h1{
+    color:white;
+    margin-left: 180px;
+    margin-top: 10px;
+    font-size:12px;
+
+}
+`;
+const ButStyle = styled.div`
+display:flex;
+`;
+
+const BotaoPdf = styled(Button)`
+background: #007bff;
+justify-content: space-around;
+margin-left: 30px;
+
+width: 200px;
+`;
+const StyledBotao = styled(Button)`
+  background-color: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+`;
 
 const Blocos = styled.div`
 display:flex;
@@ -366,21 +423,24 @@ const BoxLineContatos = styled.div`
 display:flex;
 align-items:center;
 margin-left: 45px;
-margin-top: 45px;
-margin-bottom: 145px;
-
+margin-top: 15px;
+margin-botton:50px;
 
 h1{
-    width:150px;
+    width:120px;
     font-weight:bold;
+    
 }`;
 const Bolsista = styled.div`
 display:flex;
 justify-content:left;
+justify-content: space-between;
 align-items:center;
 height:130px;
 width:100%;
 background-color: #1B1F2E;
+shadow-box:borde-box;
+padding:30px;
 
 `;
 const PerfilImag = styled.div`
@@ -389,7 +449,7 @@ align-items:center;
 margin-left:30px;
 
     img{
-        height: 90px;
+        height: 70px;
         border: 2px solid white;
         border-radius:50%;
         margin-left:50px;
@@ -479,13 +539,9 @@ display:flex;
 align-items: center;
 justify-content:space-around;
 width: 100vw;
-height: 100px;
 background:#F1F5FA;
-box-shadow: 2px 2px 6px black;
-@media screen and (max-width: 1024px) {
-    width: 100%;
-  }
-
+shadow-box:borde-box;
+padding:15px;
 
 `;
 const Title =styled.div`
