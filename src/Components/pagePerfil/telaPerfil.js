@@ -576,7 +576,6 @@ display: flex;
 height: 100vh;
 width: 100vw;
 margin-left: 125px;
-
 background:#FFFFFF;
 `;
 const SidebarContainer = styled.div`
