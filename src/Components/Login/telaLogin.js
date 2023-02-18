@@ -24,7 +24,7 @@ export default function Login() {
     event.preventDefault();
     if(password === "marcelo" && email=== "marcelo@g.com"){
         toastRef.current.show({severity: 'info', summary: 'Sucesso', detail: 'Login Efetuado!'})
-        const user = {name: 'marcelo', email: 'marcelo@g.com'}
+        const user = {name: 'ipdec', email: 'ipdec@g.com'}
 
         const userDados = JSON.stringify(user)
         localStorage.setItem("dados", userDados)
