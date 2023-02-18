@@ -22,7 +22,7 @@ export default function Login() {
 
   const submitLogin = (event) => {
     event.preventDefault();
-    if(password === "marcelo" && email=== "marcelo@g.com"){
+    if(password === "ipdec" && email=== "ipdec@g.com"){
         toastRef.current.show({severity: 'info', summary: 'Sucesso', detail: 'Login Efetuado!'})
         const user = {name: 'ipdec', email: 'ipdec@g.com'}
 
