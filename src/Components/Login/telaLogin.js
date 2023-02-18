@@ -32,7 +32,7 @@ export default function Login() {
         setTimeout(changeRoute, 5000);
     }
     else
-        toastRef.current.show({severity: 'error', summary: 'Falha', detail: 'Senha Incorreta!'})
+        toastRef.current.show({severity: 'error', summary: 'Falha', detail: 'erro no login!'})
 
   };
   function changeRoute(){
