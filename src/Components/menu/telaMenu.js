@@ -1,59 +1,123 @@
 import styled from "styled-components";
 import {FiMenu} from "react-icons/fi"
 import {FaUserGraduate, FaLock,FaSearch} from "react-icons/fa"
+import { GiHouse} from "react-icons/gi"
+import { AiOutlineRight} from "react-icons/ai"
 import {RiPagesLine} from "react-icons/ri"
 import {MdOutlineAttachMoney} from "react-icons/md"
 import Logo from "../../Assets/image/cactu.png"
 import { PanelMenu } from 'primereact/panelmenu';
 import { Button } from 'primereact/button';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InputText } from 'primereact/inputtext';
 import Cactu from "../../Assets/image/cactu.png"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Sidebar } from 'primereact/sidebar';
+import { SplitButton } from 'primereact/splitbutton';
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../Contexts/UserContext";
+
+
+
 
 
 
 
 export default function Menu(){
-    const [searchText, setSearchText] = useState("");
+    const data = [
+        { imagem: '', nome: 'João fulano de tal', projeto: 'Projeto A', escolaridade: 'Graduado', email: 'joao@example.com', situacao: 'Em andamento', nascimento: '20/02/2000', sexo: 'masculino', civil: 'casado', RG: '12.345.678-90',CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de Tal', Bairro: 'bairro de tal', Complemento: ' Complemento de tal', Cidade: 'jorge texa', estado: "estado de tal", CEP:'12.345-67'},
+        { imagem: '', nome: 'Maria fulano de tal', projeto: 'Projeto B', escolaridade: 'Pós-graduado', email: 'maria@example.com', situacao: 'Concluido', nascimento: '20/02/2000', sexo: 'feminino', civil: 'casado', RG: '12.345.678-90', CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de fulano', Bairro: 'bairro de sal', Complemento: ' Complemento de tal', Cidade: 'de tal', estado: 'estado de tal', CEP:'12.345-67' },
+        { imagem: '', nome: 'Pedro fulano de tal', projeto: 'Projeto C', escolaridade: 'Graduado', email: 'pedro@example.com', situacao: 'Interrompido', nascimento: '20/02/2000', sexo: 'masculino', civil: 'casado', RG: '12.345.678-90', CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de Tal', Bairro: 'bairro de tal', Complemento: ' Complemento de tal', Cidade: 'jorge texa', estado: "estado de tal", CEP:'12.345-67'},
+        { imagem: '', nome: 'Ana fulano de tal', projeto: 'Projeto D', escolaridade: 'Mestrado', email: 'ana@example.com', situacao: 'Cancelado', nascimento: '20/02/2000', sexo: 'feminino', civil: 'casado', RG: '12.345.678-90', CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de Tal', Bairro: 'bairro de tal', Complemento: ' Complemento de tal', Cidade: 'jorge texa', estado: "estado de tal", CEP:'12.345-67'},
+        { imagem: '', nome: 'Ana Paula', projeto: 'Projeto E', escolaridade: 'Mestrado', email: 'anaPaula@example.com', situacao: 'Em andamento', nascimento: '20/02/2000', sexo: 'feminino', civil: 'casado', RG: '12.345.678-90', CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de Tal', Bairro: 'bairro de tal', Complemento: ' Complemento de tal', Cidade: 'jorge texa', estado: "estado de tal", CEP:'12.345-67'},
+        { imagem: '', nome: 'Paula fulano de tal', projeto: 'Projeto F', escolaridade: 'Mestrado', email: 'Paula@example.com', situacao: 'Em andamento', nascimento: '20/02/2000', sexo: 'feminino', civil: 'casado', RG: '12.345.678-90', CPF: '123.456.789-09', curriculo: 'http://lattes.cnpq.br/6505242672214312', Logradouro: 'Rua de Tal', Bairro: 'bairro de tal', Complemento: ' Complemento de tal', Cidade: 'jorge texa', estado: "estado de tal", CEP:'12.345-67'}
+      ];
+
+    const navigate = useNavigate()
+    const {tasks, setTasks} = useContext(UserContext);
     const [visibleLeft, setVisibleLeft] = useState(false);
     const usuario = localStorage.getItem("dados")
     const usuarioDados = JSON.parse(usuario)
 
-    const data = [
-        { image: {Cactu}, nome: 'João', projeto: 'Projeto A', escolaridade: 'Graduado', email: 'joao@example.com', situacao: 'Em andamento' },
-        { image: {Cactu}, nome: 'Maria', projeto: 'Projeto B', escolaridade: 'Pós-graduado', email: 'maria@example.com', situacao: 'Concluido' },
-        { image: {Cactu}, nome: 'Pedro', projeto: 'Projeto C', escolaridade: 'Graduado', email: 'pedro@example.com', situacao: 'Interrompido' },
-        { image: {Cactu}, nome: 'Ana', projeto: 'Projeto D', escolaridade: 'Mestrado', email: 'ana@example.com', situacao: 'cancelado' },
-        { image: {Cactu}, nome: 'Ana Paula', projeto: 'Projeto E', escolaridade: 'Mestrado', email: 'anaPaula@example.com', situacao: 'Em andamento' },
-        { image: {Cactu}, nome: 'Paula', projeto: 'Projeto F', escolaridade: 'Mestrado', email: 'Paula@example.com', situacao: 'Em andamento' }
+    const [searchText, setSearchText] = useState("");
+    const [filteredData, setFilteredData] = useState(data);
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const [perfilDados, setPerfilDados] = useState({})
+
+
+
+    const handleStatusChange = (status) => {
+    setSelectedStatus(status);
+    console.log(status)
+    };
+
+  useEffect(() => {
+    const filtered = data.filter(
+      (item) =>
+        item.nome.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.projeto.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchText.toLowerCase())||
+        item.escolaridade.toLowerCase().includes(searchText.toLowerCase())
+    ).filter((item) => {
+      if (selectedStatus === "") {
+        return true;
+      }
+      return item.situacao === selectedStatus;
+    });
+    setFilteredData(filtered);
+  }, [searchText, selectedStatus]);
+
+
+    const filterOptions = [
+        { label: <Concluido>Concluido</Concluido>, value: 'Concluido' },
+        { label: <EmAndamento>Em andamento</EmAndamento>, value: 'Em andamento' },
+        { label: <Cancelado>Cancelado</Cancelado>, value: 'Cancelado' },
+        { label: <Interrompido>Interrompido</Interrompido>, value: 'Interrompido' }
       ];
+   
+     
 
    const renderEyeButton = (rowData) => {
     return (
       <EyeButton
         icon="pi pi-eye"
-        onClick={() => console.log("Visualizar detalhes:", rowData)}
+        onClick={() => {
+         setPerfilDados(rowData)
+         const perfil = JSON.stringify(tasks)
+         localStorage.setItem("perfil", perfil)
+          setTasks(rowData)
+          navigate("/perfil")
+        }
+
+        }
       />
     );
   };
+  
+ 
+
   const renderStatusButton = (rowData) => {
     return <StatusButton status={rowData.situacao}>{rowData.situacao}</StatusButton>;
   };
-  const onSearch = (event) => {
-    setSearchText(event.target.value);
-  };
-  const filterData = data.filter(
+
+  
+
+const onSearch = (event) => {
+  setSearchText(event.target.value);
+};
+
+useEffect(() => {
+  const filtered = data.filter(
     (item) =>
       item.nome.toLowerCase().includes(searchText.toLowerCase()) ||
       item.projeto.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchText.toLowerCase())
-  );
+      item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.escolaridade.toLowerCase().includes(searchText.toLowerCase())
 
-   
-      
+  );
+  setFilteredData(filtered);
+}, [searchText]);
     const items = [
         {
             label:<MenuItem>MENU</MenuItem>,
@@ -94,12 +158,10 @@ export default function Menu(){
             ]
         },
     ];
-
     
     return(
         <>
             <Container>
-            
                 <SidebarContainer>
                     <img src={Logo} alt="logo"/>
                     <List>
@@ -156,6 +218,13 @@ export default function Menu(){
                     <Header>
                         <Title>
                             <h1>Bolsistas e CLTs</h1>
+                            <Title2>
+                                <GiHouse style={{ color: 'blue' }} size={23}/> 
+                                <AiOutlineRight size={23}/>
+                                <a href="#">RH</a>
+                                <AiOutlineRight size={23}/>
+                                <h2>Bolsistas e CLTs</h2>
+                            </Title2>
                         </Title>
                         <Perfil>
                             <h1>{usuarioDados.name}<br/>
@@ -172,13 +241,25 @@ export default function Menu(){
                     <Line/>
                     <Colunnas>
                         <SearchBar>
-                            <span className="p-input-icon-left">
+                        <SplitButton
+                        label="Filtrar por situação"
+                        model={filterOptions.map(option => {
+                          return {
+                            label: option.label,
+                            command: () => handleStatusChange(option.value)
+                          }
+                        })}
+                      />
+                        <span className="p-input-icon-left">
                                 <FaSearch size={20}/>
-                                <StyleSearch placeholder="Pesquisar" onChange={onSearch} />
+                                <StyleSearch placeholder="Pesquisar"
+                                value={searchText}
+                                 onChange={onSearch} />
                             </span>
                         </SearchBar>
-                        <Table value={filterData}>
-                            
+                        <Table value={filteredData }>
+
+                            <Column field="imagem" body={(rowData) => <img src={Logo} />} />
                             <Column field="nome" header="Nome" />
                             <Column field="projeto" header="Projeto" />
                             <Column field="escolaridade" header="Escolaridade" />
@@ -186,7 +267,7 @@ export default function Menu(){
                             <Column
                             header="Situação"
                             body={renderStatusButton}
-                            style={{ textAlign: "center" }}
+                            style={{ textAlign: "center", }}
                             />
                             <Column
                             header="Detalhes"
@@ -196,11 +277,29 @@ export default function Menu(){
                         </Table>
                     </Colunnas>
                 </ContainerMenu>
+
                
             </Container>
         </>
     );
 }
+const Concluido =styled.div`
+    color:green;
+    font-size:20px;
+    color:green;
+`;
+const Interrompido =styled.div`
+    color:yellow;
+    font-size:20px;
+`;
+const Cancelado =styled.div`
+    color:red;
+    font-size:20px;
+`;
+const EmAndamento =styled.div`
+    color:blue;
+    font-size:20px;
+`;
 
 const IconMenu = styled.div`
   margin-top: 10px;
@@ -243,6 +342,10 @@ const SearchBar = styled.div`
 const Table = styled(DataTable)`
   width: 100%;
   margin-top: 1rem;
+  img{
+    height:40px;
+    border-radius: 50%;
+  }
 
   .p-datatable-thead > tr > th {
     font-weight: 700;
@@ -262,9 +365,9 @@ const Table = styled(DataTable)`
 const StatusButton = styled(Button)`
   background-color: ${(props) => {
     if (props.status === "Concluido") return "green";
-    if (props.status === "em andamento") return "blue";
+    if (props.status === "Em andamento") return "blue";
     if (props.status === "Interrompido") return "yellow";
-    if (props.status === "cancelado") return "red";
+    if (props.status === "Cancelado") return "red";
   }};
   color: #fff;
   font-size: 0.8rem;
@@ -282,9 +385,6 @@ const EyeButton = styled(Button)`
     color: #000;
   }
 `;
-
-
-
 
 const StyleSearch = styled(InputText)`
 outline: none;
@@ -334,7 +434,7 @@ const Line = styled.div`
   &::before {
     content: '';
     position: absolute;
-    left: 2%;
+    left: 1%;
     top: 1;
     bottom: 0;
     width: 5%;
@@ -348,19 +448,35 @@ display:flex;
 align-items: center;
 justify-content:space-around;
 width: 100vw;
-height: 15vh;
+height: 100px;
 background:#F1F5FA;
 box-shadow: 2px 2px 6px black;
 
 
 `;
 const Title =styled.div`
+width: 400px;
+
 h1{
     font-size:20px;
     font-weight: bold;
 
 }
 `;
+const Title2 =styled.div`
+margin-top:25px;
+display:flex;
+align-items:center;
+width: 480px;
+
+a {
+    color: blue; 
+  }
+h1{
+    font-size:20px;
+    font-weight: bold;
+
+}`;
 const Container = styled.div`
 display: flex;
 height: 100vh;
@@ -370,6 +486,8 @@ margin-left: 125px;
 background:#FFFFFF;
 `;
 const SidebarContainer = styled.div`
+overflow: hidden;
+
   height: 100%;
   width: 60px;
   z-index:10;
@@ -382,12 +500,14 @@ const SidebarContainer = styled.div`
   padding: 5px;
   img{
     height: 35px;
-    margin-top: 70px;
+    margin-top: 75px;
     margin-left: 5px;
     margin-bottom: 30px;
   }
 `;
 const SidebarContainer2 = styled.div`
+overflow: hidden;
+
   height: 100%;
   width: 290px;
   border-right: 3px solid #1B1F2E;

@@ -130,8 +130,8 @@ h3{
 const SingUp = styled.div`
 margin-top: 15px;
 a {
-    text-decoration: none; /* Remove sublinhado */
-    color: blue; /* Define a cor do link */
+    text-decoration: none; 
+    color: blue; 
   }
 `;
 const Left = styled.div`
