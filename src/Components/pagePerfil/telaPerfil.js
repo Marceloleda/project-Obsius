@@ -265,11 +265,11 @@ export default function Menu(){
                             </Base1>
                             <Base1>
                                 <h2>Bairro</h2>
-                                <h1>{perfilInf.nascimento}</h1>
+                                <h1>{perfilInf.Bairro}</h1>
                             </Base1>
                             <Base1>
                                 <h2>Complemento</h2>
-                                <h1>{perfilInf.sexo}</h1>
+                                <h1>{perfilInf.Complemento}</h1>
                             </Base1>
 
                         </Dado2>
