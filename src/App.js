@@ -34,5 +34,6 @@ const GlobalStyle = createGlobalStyle`
     justify-content:center;
     overflow-x: hidden;
     padding-bottom: 300px;
+    font-family: 'Roboto', sans-serif;
   }
 `
