@@ -303,19 +303,19 @@ const EmAndamento =styled.div`
 
 const IconMenu = styled.div`
   margin-top: 10px;
-  margin-bottom:13px;
+  margin-bottom:36px;
 `;
 const IconRH = styled.div`
   margin-top: 10px;
-  margin-bottom:16px;
+  margin-bottom:30px;
 `;
 const IconPage = styled.div`
   margin-top: 10px;
-  margin-bottom:16px;
+  margin-bottom:30px;
 `;
 const IconLock = styled.div`
   margin-top: 10px;
-  margin-bottom:20px;
+  margin-bottom:30px;
 `;
 const Colunnas = styled.div`
   display: flex;
@@ -500,7 +500,7 @@ overflow: hidden;
   padding: 5px;
   img{
     height: 35px;
-    margin-top: 75px;
+    margin-top: 95px;
     margin-left: 5px;
     margin-bottom: 30px;
   }
